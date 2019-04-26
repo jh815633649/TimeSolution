@@ -99,7 +99,7 @@ public class MainActivity extends AppCompatActivity {
                 .hide(fragmentTwo)
                 .hide(fragmentThree);
         //beginTransaction.addToBackStack(null);//返回到上一个显示的fragment
-        beginTransaction.commit();//每一个事务最后操作必须是commit（），否则看不见效果
+        beginTransaction.commit();//每一个事务最后操作必须是commit（），否则看不见效果.
         showNav(R.id.navigation_home);
     }
 
