@@ -3,6 +3,8 @@ package com.example.timesolution;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
@@ -28,6 +30,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -321,6 +324,7 @@ public class Login extends AppCompatActivity implements LoaderCallbacks<Cursor> 
             }
 
             //匹配用户名和密码
+            /*
             for (String credential : DUMMY_CREDENTIALS) {
                 String[] pieces = credential.split(":");
                 if (pieces[0].equals(mEmail)) {
@@ -328,9 +332,23 @@ public class Login extends AppCompatActivity implements LoaderCallbacks<Cursor> 
                     return pieces[1].equals(mPassword);
                 }
             }
+            */
 
-            // TODO: register the new account here.
-            return true;
+            SharedPreferences read = getSharedPreferences(mEmail, MODE_PRIVATE);
+            //return mPassword.equals(read.getString("password", ""));
+            String existed=read.getString("password","");
+            if(existed.equals("")){
+                SharedPreferences.Editor editor = read.edit();
+                //将获取过来的值放入文件
+                editor.putString("password", mPassword);
+                //步骤3：提交
+                editor.apply();
+                //Toast.makeText(getApplicationContext(), "注册成功", Toast.LENGTH_LONG).show();
+                return true;
+            }
+            else{
+                return mPassword.equals(read.getString("password", ""));
+            }
         }
 
         @Override
@@ -340,6 +358,11 @@ public class Login extends AppCompatActivity implements LoaderCallbacks<Cursor> 
 
             if (success) {
                 //登录成功
+                SharedPreferences cur_user = getSharedPreferences("current_user", MODE_PRIVATE);
+                SharedPreferences.Editor editor = cur_user.edit();
+                editor.putString("current_username", mEmail);
+                editor.apply();
+                Toast.makeText(getApplicationContext(), "成功", Toast.LENGTH_LONG).show();
                 finish();
             } else {
                 mPasswordView.setError(getString(R.string.error_incorrect_password));

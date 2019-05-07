@@ -2,6 +2,7 @@ package com.example.timesolution;
 
 import android.app.FragmentTransaction;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -110,8 +111,8 @@ public class MainActivity extends AppCompatActivity {
                 beginTransaction.hide(fragmentTwo).hide(fragmentThree);
                 beginTransaction.show(fragmentOne);
                 //beginTransaction.addToBackStack(null);
-                Toast.makeText(this, "xdpi：" + getResources().getDisplayMetrics().xdpi, Toast.LENGTH_SHORT).show();
-                Toast.makeText(this, "ydpi：" + getResources().getDisplayMetrics().ydpi, Toast.LENGTH_SHORT).show();
+                //Toast.makeText(this, "xdpi：" + getResources().getDisplayMetrics().xdpi, Toast.LENGTH_SHORT).show();
+                //Toast.makeText(this, "ydpi：" + getResources().getDisplayMetrics().ydpi, Toast.LENGTH_SHORT).show();
                 beginTransaction.commit();
                 break;
             case R.id.navigation_dashboard:
@@ -127,6 +128,20 @@ public class MainActivity extends AppCompatActivity {
                 beginTransaction.commit();
                 break;
         }
+    }
+
+    @Override
+    public void onResume(){
+        SharedPreferences read = getSharedPreferences("current_user", MODE_PRIVATE);
+        //return mPassword.equals(read.getString("password", ""));
+        String existed=read.getString("current_username","");
+        if(existed.equals("")){
+
+        }
+        else{
+            userName.setText(existed);
+        }
+        super.onResume();
     }
 }
 

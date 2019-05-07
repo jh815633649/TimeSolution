@@ -34,10 +34,10 @@ public class FragmentOne extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         mView = inflater.inflate(R.layout.fragment_fragment_one, container, false);
-
+        //初始化页面和数据
         initView();
         initData();
-
+        //判空及显示提示
         if(mDatas.size()!=0){
             text_empty.setVisibility(View.GONE);
         }
@@ -45,7 +45,7 @@ public class FragmentOne extends Fragment {
         ibtn.setOnClickListener(new View.OnClickListener() {
                                     @Override
                                     public void onClick(View v) {
-                                        //todo
+                                        //添加事件跳转页面
                                         Intent intent = new Intent(getActivity(), AddThing.class);
                                         startActivityForResult(intent, rqCode);
                                         //getActivity().overridePendingTransition(R.anim.slide, R.anim.ani_left_sign_out);
