@@ -323,32 +323,8 @@ public class Login extends AppCompatActivity implements LoaderCallbacks<Cursor> 
                 return false;
             }
 
-            //匹配用户名和密码
-            /*
-            for (String credential : DUMMY_CREDENTIALS) {
-                String[] pieces = credential.split(":");
-                if (pieces[0].equals(mEmail)) {
-                    // Account exists, return true if the password matches.
-                    return pieces[1].equals(mPassword);
-                }
-            }
-            */
+            return true;
 
-            SharedPreferences read = getSharedPreferences(mEmail, MODE_PRIVATE);
-            //return mPassword.equals(read.getString("password", ""));
-            String existed=read.getString("password","");
-            if(existed.equals("")){
-                SharedPreferences.Editor editor = read.edit();
-                //将获取过来的值放入文件
-                editor.putString("password", mPassword);
-                //步骤3：提交
-                editor.apply();
-                //Toast.makeText(getApplicationContext(), "注册成功", Toast.LENGTH_LONG).show();
-                return true;
-            }
-            else{
-                return mPassword.equals(read.getString("password", ""));
-            }
         }
 
         @Override
@@ -358,10 +334,8 @@ public class Login extends AppCompatActivity implements LoaderCallbacks<Cursor> 
 
             if (success) {
                 //登录成功
-                SharedPreferences cur_user = getSharedPreferences("current_user", MODE_PRIVATE);
-                SharedPreferences.Editor editor = cur_user.edit();
-                editor.putString("current_username", mEmail);
-                editor.apply();
+
+
                 Toast.makeText(getApplicationContext(), "成功", Toast.LENGTH_LONG).show();
                 finish();
             } else {

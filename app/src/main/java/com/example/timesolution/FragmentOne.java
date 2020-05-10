@@ -1,6 +1,7 @@
 package com.example.timesolution;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.view.LayoutInflater;
@@ -13,6 +14,9 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+
+import static android.content.Context.MODE_PRIVATE;
 
 public class FragmentOne extends Fragment {
 
@@ -23,6 +27,8 @@ public class FragmentOne extends Fragment {
     private static List<thingsToDo> mDatas;
     private static MyAdapter myAdapter;
     private int rqCode = 0;
+    private SharedPreferences read;
+    private SharedPreferences.Editor editor;
 
     private DateLine startline, deadline;
     private String impt;
@@ -68,8 +74,29 @@ public class FragmentOne extends Fragment {
             deadline = new DateLine(bundle.getString("deadline.date", ""), bundle.getString("deadline.time", ""));
             tit = bundle.getString("tit", "");
 
+            //存文件
+            read = getActivity().getSharedPreferences("name_list", MODE_PRIVATE);
+            //事件目录+1
+            editor = read.edit();
+            editor.putInt(title, 0);
+            editor.apply();
+            //新事件
+            String temp_name = title;
+            read = getActivity().getSharedPreferences(temp_name, MODE_PRIVATE);
+            editor = read.edit();
+            editor.putString("title", title);
+            editor.putString("desc", desc);
+            editor.putString("impt", impt);
+            editor.putString("startline.date", bundle.getString("startline.date", ""));
+            editor.putString("startline.time", bundle.getString("startline.time", ""));
+            editor.putString("deadline.date", bundle.getString("deadline.date", ""));
+            editor.putString("deadline.time", bundle.getString("deadline.time", ""));
+            editor.putString("tit", tit);
+            editor.apply();
+            //文件存完毕
+
             mDatas.add(new thingsToDo(title, desc, startline, deadline, impt, tit));
-            text_empty.setVisibility(View.GONE);//无事件提示隐藏
+            text_empty.setVisibility(View.GONE);//提示隐藏
             myAdapter = new MyAdapter(this.getActivity(), mDatas);
             listView.setAdapter(myAdapter);
         } else {
@@ -90,13 +117,10 @@ public class FragmentOne extends Fragment {
 
         mDatas = new ArrayList<thingsToDo>();
 
-        //将数据装到集合中去
-        //thingsToDo thing = new thingsToDo();
-        //mDatas.add(thing);
-
+        //从本地读取历史事件
+        findHistory();
         //为数据绑定适配器
         myAdapter = new MyAdapter(this.getActivity(), mDatas);
-
         listView.setAdapter(myAdapter);
     }
 
@@ -111,11 +135,38 @@ public class FragmentOne extends Fragment {
 
     @Override
     public void onResume(){
-        if(mDatas.size()==0){
-            text_empty.setVisibility(View.VISIBLE);
-        }
+        //检查当前用户名
+        //read = getActivity().getSharedPreferences("current_user", MODE_PRIVATE);
+
+
         myAdapter = new MyAdapter(this.getActivity(), mDatas);
         listView.setAdapter(myAdapter);
+        if(mDatas.size()!=0){
+            text_empty.setVisibility(View.GONE);
+        }
+        else{
+            text_empty.setVisibility(View.VISIBLE);
+        }
         super.onResume();
+    }
+
+    //从本地读取历史事件
+    private void findHistory(){
+        read=getActivity().getSharedPreferences("name_list", MODE_PRIVATE);
+        Map m=read.getAll();
+        for(Object key:m.keySet()){
+            String temp_name=(String) key;
+            read = getActivity().getSharedPreferences(temp_name, MODE_PRIVATE);
+            //读到事件了
+            title=read.getString("title","null");
+            desc = read.getString("desc", "");
+            impt = read.getString("impt", "");
+            startline = new DateLine(read.getString("startline.date", ""), read.getString("startline.time", ""));
+            deadline = new DateLine(read.getString("deadline.date", ""), read.getString("deadline.time", ""));
+            tit = read.getString("tit", "");
+            //事件添加进列表
+            mDatas.add(new thingsToDo(title, desc, startline, deadline, impt, tit));
+        }
+
     }
 }

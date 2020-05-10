@@ -2,6 +2,7 @@ package com.example.timesolution;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -76,10 +77,10 @@ public class realmodifyThing extends AppCompatActivity {
         spinner4.setAdapter(adapter2);
 
         //下拉框默认值
-        spinner1.setSelection(thisThing.get_line_Date(1),true);
-        spinner2.setSelection(thisThing.get_line_Time(1),true);
-        spinner3.setSelection(thisThing.get_line_Date(2),true);
-        spinner4.setSelection(thisThing.get_line_Time(2),true);
+        spinner1.setSelection(thisThing.get_line_Date(1));
+        spinner2.setSelection(thisThing.get_line_Time(1));
+        spinner3.setSelection(thisThing.get_line_Date(2));
+        spinner4.setSelection(thisThing.get_line_Time(2));
         //输入框默认值
         editText1.setText(thisThing.getTitle());
         editText2.setText(thisThing.getDesc());
@@ -107,6 +108,7 @@ public class realmodifyThing extends AppCompatActivity {
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
                 // TODO Auto-generated method stub
+                startline.date="无";
             }
         });
         spinner2.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -120,6 +122,7 @@ public class realmodifyThing extends AppCompatActivity {
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
                 // TODO Auto-generated method stub
+                startline.time="无";
             }
         });
         spinner3.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -133,6 +136,7 @@ public class realmodifyThing extends AppCompatActivity {
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
                 // TODO Auto-generated method stub
+                deadline.date="无";
             }
         });
         spinner4.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -146,17 +150,36 @@ public class realmodifyThing extends AppCompatActivity {
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
                 // TODO Auto-generated method stub
+                deadline.time="无";
             }
         });
 
         btn.setOnClickListener(new View.OnClickListener() {
                                    @Override
                                    public void onClick(View v) {
-                                       FragmentOne.delT(position);
+                                       /*
                                        startline.date=spinner1.getSelectedItem().toString();
                                        startline.time=spinner2.getSelectedItem().toString();
                                        deadline.date=spinner3.getSelectedItem().toString();
                                        deadline.time=spinner4.getSelectedItem().toString();
+                                       */
+                                       /*
+                                       //文件修改
+                                       String temp_name = editText1.getText().toString();
+                                       SharedPreferences read = getSharedPreferences(temp_name, MODE_PRIVATE);
+                                       SharedPreferences.Editor editor = read.edit();
+                                       editor.putString("title", editText1.getText().toString());
+                                       editor.putString("desc", editText2.getText().toString());
+                                       editor.putString("impt", editText3.getText().toString());
+                                       editor.putString("startline.date", startline.date);
+                                       editor.putString("startline.time", startline.time);
+                                       editor.putString("deadline.date", deadline.date);
+                                       editor.putString("deadline.time", deadline.time);
+                                       editor.putString("tit", editText4.getText().toString());
+                                       editor.apply();
+                                       */
+                                       //mData修改
+                                       FragmentOne.delT(position);
                                        FragmentOne.addT(new thingsToDo(
                                                editText1.getText().toString(),
                                                editText2.getText().toString(),
@@ -165,6 +188,7 @@ public class realmodifyThing extends AppCompatActivity {
                                                editText3.getText().toString(),
                                                editText4.getText().toString()
                                        ));
+
                                        finish();
                                    }
                                }

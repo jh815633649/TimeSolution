@@ -2,6 +2,7 @@ package com.example.timesolution;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -89,6 +90,17 @@ public class modifyThing extends AppCompatActivity {
                                                       .setPositiveButton("是", new DialogInterface.OnClickListener() {//添加"Yes"按钮
                                                           @Override
                                                           public void onClick(DialogInterface dialogInterface, int i) {
+                                                              //从事件列表文件中删除
+                                                              SharedPreferences read=getSharedPreferences("name_list", MODE_PRIVATE);
+                                                              SharedPreferences.Editor editor=read.edit();
+                                                              editor.remove(thisThing.getTitle());
+                                                              editor.apply();
+                                                              //删除thisThing的文件
+                                                              read=getSharedPreferences(thisThing.getTitle(),MODE_PRIVATE);
+                                                              editor=read.edit();
+                                                              editor.clear();
+                                                              editor.apply();
+
                                                               FragmentOne.delT(position);
                                                               finish();
                                                           }

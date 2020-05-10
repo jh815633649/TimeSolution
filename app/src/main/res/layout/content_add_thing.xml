@@ -67,8 +67,8 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:ems="10"
-                android:inputType="textPersonName"
-                android:text="title" />
+                android:hint="title"
+                android:inputType="textPersonName" />
         </LinearLayout>
 
         <LinearLayout
@@ -89,8 +89,8 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:ems="10"
-                android:inputType="textPersonName"
-                android:text="desc" />
+                android:hint="desc"
+                android:inputType="textPersonName" />
 
         </LinearLayout>
 
@@ -165,8 +165,9 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:ems="10"
-                android:inputType="number"
-                android:text="80" />
+                android:hint="(1~99)"
+                android:inputType="number" />
+
         </LinearLayout>
 
         <LinearLayout
@@ -188,8 +189,9 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:ems="10"
-                android:inputType="number"
-                android:text="4" />
+                android:hint="(/30min)"
+                android:inputType="number" />
+
         </LinearLayout>
 
         <Button

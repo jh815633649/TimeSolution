@@ -102,6 +102,11 @@ public class MainActivity extends AppCompatActivity {
         //beginTransaction.addToBackStack(null);//返回到上一个显示的fragment
         beginTransaction.commit();//每一个事务最后操作必须是commit（），否则看不见效果.
         showNav(R.id.navigation_home);
+        //初始化文件中的当前用户名
+        SharedPreferences read = getSharedPreferences("current_user", MODE_PRIVATE);
+        SharedPreferences.Editor editor = read.edit();
+        editor.putString("current_username", "");
+        editor.apply();
     }
 
     private void showNav(int navid) {
@@ -134,12 +139,12 @@ public class MainActivity extends AppCompatActivity {
     public void onResume(){
         SharedPreferences read = getSharedPreferences("current_user", MODE_PRIVATE);
         //return mPassword.equals(read.getString("password", ""));
-        String existed=read.getString("current_username","");
-        if(existed.equals("")){
+        String cur=read.getString("current_username","");
+        if(cur.equals("")){
 
         }
         else{
-            userName.setText(existed);
+            userName.setText(cur);
         }
         super.onResume();
     }
